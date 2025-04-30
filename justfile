@@ -1,6 +1,6 @@
 CC := "riscv64-unknown-linux-gnu-gcc"
 SYSROOT := "/home/eason/.riscv-toolchain/riscv-gnu-toolchain/sysroot/"
-CFLAGS := "-static -march=rv64gcv -g --sysroot={{SYSROOT}} -DFORCE_RISCV"
+CFLAGS := "-static -march=rv64gcv -g -DFORCE_RISCV -lm"
 PK := "pk"
 SPIKE := "spike"
 SPIKE_FLAG := "--isa=RV64GCV"
@@ -18,7 +18,7 @@ build task:
     @echo "Building asm..."
     ./build-asm.sh
     @echo "Compiling {{task}}.c for RISC-V..."
-    {{CC}} {{CFLAGS}} -I{{SYSROOT}}/usr/include -I$(pwd)/include -I$(pwd)/build/casm -o {{BUILD_DIR}}/artifacts/{{task}} exercise/{{task}}.c
+    {{CC}} --sysroot={{SYSROOT}} -I$(pwd)/include -I$(pwd)/build/casm -o {{BUILD_DIR}}/artifacts/{{task}} exercise/{{task}}.c {{CFLAGS}}
 
 run task:
     @echo "Running {{task}} on Spike..."
