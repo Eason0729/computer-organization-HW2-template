@@ -8,6 +8,10 @@ for file in assembly/*.s; do
 
     {
         while IFS= read -r line; do
+            line=$(printf '%s' "$line" | sed -E 's/(\/\/|#).*//; s/[[:space:]]+$//')
+
+            [[ -z "$line" ]] && continue
+
             printf '"%s\\n"\n' "$line"
         done
     } < "$file" > "$output"
